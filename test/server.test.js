@@ -37,6 +37,34 @@ tap.test("GET /api/v1/tasks/", async (t) => {
   t.end();
 });
 
+tap.test("GET /api/v1/tasks?completed=true", async (t) => {
+  const response = await server.get("/api/v1/tasks?completed=true");
+  t.equal(response.status, 200);
+  t.hasOwnProp(response.body[0], "id");
+  t.hasOwnProp(response.body[0], "title");
+  t.hasOwnProp(response.body[0], "description");
+  t.hasOwnProp(response.body[0], "completed");
+  t.type(response.body[0].id, "number");
+  t.type(response.body[0].title, "string");
+  t.type(response.body[0].description, "string");
+  t.type(response.body[0].completed, "boolean");
+  t.end();
+});
+
+tap.test("GET /api/v1/tasks?completed=false", async (t) => {
+  const response = await server.get("/api/v1/tasks?completed=false");
+  t.equal(response.status, 200);
+  t.hasOwnProp(response.body[0], "id");
+  t.hasOwnProp(response.body[0], "title");
+  t.hasOwnProp(response.body[0], "description");
+  t.hasOwnProp(response.body[0], "completed");
+  t.type(response.body[0].id, "number");
+  t.type(response.body[0].title, "string");
+  t.type(response.body[0].description, "string");
+  t.type(response.body[0].completed, "boolean");
+  t.end();
+});
+
 tap.test("GET /tasks/:id", async (t) => {
   const response = await server.get("/api/v1/tasks/1");
   t.equal(response.status, 200);

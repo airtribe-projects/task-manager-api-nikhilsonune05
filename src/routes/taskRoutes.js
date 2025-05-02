@@ -7,7 +7,8 @@ const {
     updateTask,
     deleteTask,
     getAllTasks,
-    getSingleTask
+    getSingleTask,
+    getByPriority
 } = require("../controllers/taskControllers");
 
 router.get('', getAllTasks);
@@ -19,5 +20,7 @@ router.post('/', createTask);
 router.patch('/:id', updateTask)
 
 router.delete('/:id', deleteTask)
+
+router.get('/priority/:level', getByPriority)
 
 module.exports = router;

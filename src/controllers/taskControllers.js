@@ -1,17 +1,37 @@
 let tasks = require("../models/tasksModel");
 
 const getAllTasks = (req, res) => {
-    const localTasks = tasks ?? [];
-    return res.status(200).send(localTasks);
+    const query = req.query;
+    let filteredTasks = [];
+
+    if ('completed' in query) {
+        const completedValue = query.completed === 'true'; // converts to boolean
+        filteredTasks = tasks.filter(task => task.completed === completedValue);
+        return res.status(200).send(filteredTasks);
+    }
+
+    return res.status(200).send(tasks);
+}
+const getByPriority = (req, res) => {
+    const level = req.params.level;
+    let filteredTasks = [];
+
+    if (level) {
+        filteredTasks = tasks.filter(task => task.priority === level);
+        return res.status(200).send(filteredTasks);
+    } else {
+        return res.status(400).send("No priority added!!");
+    }
+
 }
 
 const getSingleTask = (req, res) => {
     const localTasks = tasks ?? [];
     const id = parseInt(req.params.id);
     const task = localTasks.find(task => task.id === id);
-    if(task) {
+    if (task) {
         return res.status(200).send(task);
-    } 
+    }
     return res.status(404).send("Not Found!!");
 }
 
@@ -60,5 +80,6 @@ module.exports = {
     createTask,
     updateTask,
     deleteTask,
-    getSingleTask
+    getSingleTask,
+    getByPriority
 }
